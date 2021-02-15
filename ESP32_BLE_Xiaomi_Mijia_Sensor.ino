@@ -1,5 +1,3 @@
-// From: https://github.com/karolkalinski/esp32-snippets
-
 #include <BLEDevice.h>
 #include <SimpleTimer.h>
 
@@ -38,11 +36,13 @@ static void notifyCallback(
   bool isNotify) {
   float temp;
   float humi;
+  float batt;
   Serial.print("Notify callback for characteristic ");
   Serial.println(pBLERemoteCharacteristic->getUUID().toString().c_str());
   temp = (pData[0] | (pData[1] << 8)) * 0.01; //little endian 
   humi = pData[2];
-  Serial.printf("temp = %.1f : humidity = %.1f \n", temp, humi);
+  batt = pData[3];
+  Serial.printf("temp = %.1f : humidity = %.1f : battery = %.1f \n", temp, humi, batt);
   pClient->disconnect();
 }
 
